@@ -1,0 +1,80 @@
+﻿<MetroControls:MetroWindow x:Class="GoldSrcSpriteViewer.WPF.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:GoldSrcSpriteViewer"
+        mc:Ignorable="d"
+        xmlns:MetroControls="clr-namespace:MahApps.Metro.Controls;assembly=MahApps.Metro"
+        xmlns:ViewModels="clr-namespace:GoldSrcSpriteViewer.ViewModels;assembly=GoldSrcSpriteViewer.ViewModels"
+        Title="MainWindow"
+        Height="350"
+        Width="525"
+        EnableDWMDropShadow="True">
+    <MetroControls:MetroWindow.DataContext>
+        <ViewModels:MainViewModel />
+    </MetroControls:MetroWindow.DataContext>
+    <MetroControls:MetroWindow.RightWindowCommands>
+        <MetroControls:WindowCommands>
+            <Button ToolTip="Open sprite" Command="{Binding OpenSpriteCommand}">
+                <Rectangle Width="20"
+                   Height="16"
+                   Fill="{Binding RelativeSource={RelativeSource AncestorType=Button}, Path=Foreground}">
+                    <Rectangle.OpacityMask>
+                        <VisualBrush Stretch="Fill" Visual="{StaticResource appbar_folder_open}" />
+                    </Rectangle.OpacityMask>
+                </Rectangle>
+            </Button>
+        </MetroControls:WindowCommands>
+    </MetroControls:MetroWindow.RightWindowCommands>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <Image Grid.Column="0" Source="{Binding CurrentFrame.Bitmap}" />
+
+            <StackPanel Width="180" Grid.Column="1" Margin="10" >
+                <TextBlock Text="Size" FontWeight="Bold" />
+                <TextBlock Text="128x128" Margin="0,0,0,5"/>
+
+                <TextBlock Text="Origin" FontWeight="Bold" />
+                <TextBlock Text="-64x64" Margin="0,0,0,5"/>
+
+                <TextBlock Text="Frame count" FontWeight="Bold" />
+                <TextBlock Text="7" Margin="0,0,0,5"/>
+
+                <TextBlock Text="Type" FontWeight="Bold" />
+                <TextBlock Text="VP_PARALLEL" Margin="0,0,0,5"/>
+
+                <TextBlock Text="Format" FontWeight="Bold" />
+                <TextBlock Text="SPR_ALPHATEST" Margin="0,0,0,5"/>
+            </StackPanel>
+        </Grid>
+
+        <ListView Grid.Row="1" Height="120" ItemsSource="{Binding Sprite.Frames}" Margin="10" BorderThickness="0" SelectedIndex="{Binding CurrentFrameIndex, Mode=TwoWay}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel Orientation="Horizontal" />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid Margin="10">
+                        <Image Source="{Binding Bitmap}" />
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+    </Grid>
+</MetroControls:MetroWindow>
